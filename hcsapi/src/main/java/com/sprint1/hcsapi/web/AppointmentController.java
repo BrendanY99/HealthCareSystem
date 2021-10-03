@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +30,9 @@ public class AppointmentController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> createNewAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
-		ResponseEntity<?> errorMap=mapValidationErrorService.MapValidationError(result);
+		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
 		Appointment savedAppointment= appointmentService.saveOrUpdate(appointment);
 		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.CREATED);
@@ -38,17 +40,20 @@ public class AppointmentController {
 	
 	
 	@GetMapping("/{appointmentId}")
-	public ResponseEntity<?> getProjectById(@PathVariable long appointmentId){
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	public ResponseEntity<?> getAppointmentById(@PathVariable long appointmentId){
 		Appointment appointment=appointmentService.viewAppointmentById(appointmentId);
 		return new ResponseEntity<Appointment>(appointment, HttpStatus.OK);
 	}
 	
 	@GetMapping("/allAppointments")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Iterable<Appointment> getAllAppointments(){
 		return appointmentService.viewAllAppointments();
 	}
 	
 	@DeleteMapping("/{appointmentId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> deleteAppointment(@PathVariable long appointmentId){
 		appointmentService.removeAppointmentById(appointmentId);
 		return new ResponseEntity<String>("Appointment with id : "+appointmentId+" is deleted", HttpStatus.OK);

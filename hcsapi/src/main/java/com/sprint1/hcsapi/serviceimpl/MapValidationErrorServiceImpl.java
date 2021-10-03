@@ -11,17 +11,21 @@ import org.springframework.validation.FieldError;
 
 import com.sprint1.hcsapi.service.MapValidationErrorService;
 
+/**This class will be implementing methods of MapValidationErrorService interface.
+ * @author devendra
+ *
+ */
 @Service
 public class MapValidationErrorServiceImpl implements MapValidationErrorService {
 
 	@Override
-	public ResponseEntity<?> MapValidationError(BindingResult result) {
+	public ResponseEntity<?> mapValidationError(BindingResult result) {
 		if(result.hasErrors()) {
-			Map<String,String> errorMap=new HashMap<>();
-			for(FieldError fieldError : result.getFieldErrors()) {
-				errorMap.put(fieldError.getField(),fieldError.getDefaultMessage());
+			Map<String,String> errormap=new HashMap<>();
+			for(FieldError fieldError:result.getFieldErrors()) {
+				errormap.put(fieldError.getField(), fieldError.getDefaultMessage());
 			}
-			return new ResponseEntity<Map<String,String>>(errorMap,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String,String>>(errormap,HttpStatus.BAD_REQUEST);
 		}
 		return null;
 	}
