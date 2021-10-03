@@ -51,13 +51,6 @@ public class DiagnosticTestController {
 		
 	}
 	
-	@GetMapping("/{testName}")
-	public ResponseEntity<?> getTestByName(@PathVariable String testName){
-		DiagnosticTest test=diagnosticTestService.findByTestName(testName.toUpperCase());
-		return new ResponseEntity<DiagnosticTest>(test,HttpStatus.OK);
-		
-	}
-	
 	@DeleteMapping("/{testName}")
 	public ResponseEntity<?> deleteTestByName(@PathVariable String testName){
 		diagnosticTestService.deleteTestByTestName(testName);

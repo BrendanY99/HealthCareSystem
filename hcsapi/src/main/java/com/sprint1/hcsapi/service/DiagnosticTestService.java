@@ -21,12 +21,6 @@ public interface DiagnosticTestService {
 	 */
 	public Iterable<DiagnosticTest> getAllTests();
 	
-	/**
-	 * This find method will find the diagnostic test for the respective testName
-	 * @param testName to find diagnostic test
-	 * @return the found diagnostic test
-	 */
-	public DiagnosticTest findByTestName(String testName);
 	
 	/**
 	 *  This delete method will delete the diagnostic test for the respective testName

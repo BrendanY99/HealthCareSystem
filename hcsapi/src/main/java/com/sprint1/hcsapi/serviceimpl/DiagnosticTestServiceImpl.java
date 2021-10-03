@@ -30,25 +30,18 @@ public class DiagnosticTestServiceImpl implements DiagnosticTestService {
 	
 	@Override
 	public Iterable<DiagnosticTest> getAllTests() {
-      // returns all available dianostic tests		
+      // returns all available diagnostic tests		
 		return diagnosticTestRepository.findAll();
 	}
 	
-	@Override
-	public DiagnosticTest findByTestName(String testName) {
-       //returns found diagnostic test
-		DiagnosticTest diagnosticTest=diagnosticTestRepository.findByTestName(testName);
-		//throws exception if diagnostic test not found
-		if(diagnosticTest==null)
-			throw new TestNameException("TestName "+testName+" does not exists");
-		return diagnosticTest;
-	}
 
 	@Override
 	public void deleteTestByTestName(String testName) {
         //delete found diagnostic test
         //throws exception if testName not found		
-		DiagnosticTest test=findByTestName(testName);
+		DiagnosticTest test=diagnosticTestRepository.findByTestName(testName);
+		if(test==null)
+			throw new TestNameException("TestName "+testName.toUpperCase()+" does not exists");
 		diagnosticTestRepository.delete(test);
 				
 	}
