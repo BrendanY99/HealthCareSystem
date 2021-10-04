@@ -29,15 +29,23 @@ public class AppointmentController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("")
+	@PostMapping("/create")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<?> createNewAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
+	public ResponseEntity<?> createAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
 		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
-		Appointment savedAppointment= appointmentService.saveOrUpdate(appointment);
+		Appointment savedAppointment= appointmentService.save(appointment);
 		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.CREATED);
 	}
 	
+	@PostMapping("/update")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> updateAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
+		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
+		if(errorMap!=null) return errorMap;
+		Appointment savedAppointment= appointmentService.update(appointment);
+		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.OK);
+	}
 	
 	@GetMapping("/{appointmentId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")

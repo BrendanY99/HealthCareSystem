@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.domain.Users;
 import com.sprint1.hcsapi.repository.UserRepository;
 import com.sprint1.hcsapi.service.MapValidationErrorService;
@@ -37,13 +39,23 @@ public class UserController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("")
+	@PostMapping("/register")
 	public ResponseEntity<?> createNewUser(@Valid@RequestBody Users users,BindingResult result){
 		ResponseEntity<?> errormap =mapValidationErrorService.mapValidationError(result);
 		if(errormap!=null) return errormap;
-		Users savedUser=userService.saveOrUpdate(users);
-		return new ResponseEntity<Users>(savedUser,HttpStatus.CREATED);
+		String token=userService.registerUser(users);
+		return new ResponseEntity<String>(token,HttpStatus.CREATED);
 	}
+	
+	@PostMapping("/update")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> updateUser(@Valid@RequestBody Users users,BindingResult result){
+		ResponseEntity<?> errormap =mapValidationErrorService.mapValidationError(result);
+		if(errormap!=null) return errormap;
+		Users savedUser=userService.update(users);
+		return new ResponseEntity<Users>(savedUser,HttpStatus.OK);
+	}
+	
 	@GetMapping("/{email}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> getUserByEmail(@PathVariable String email){
@@ -70,6 +82,14 @@ public class UserController {
 		return new ResponseEntity<String>(userService.validateUser(users.getUsername(), users.getPassword()),HttpStatus.OK);
 	}
 	
+//	@PostMapping("/createAppointment")
+//	@PreAuthorize("hasRole('ROLE_USER')")
+//	public ResponseEntity<?> addAppointment(@RequestHeader Map<String,String> header,@RequestBody Appointment appointment){
+//		String token = header.get("authorization");
+//		token=token.substring(7);
+//		
+//		return new ResponseEntity<Appointment>(userService.addAppointment(token,appointment),HttpStatus.OK);
+//	}
 	
 
 }

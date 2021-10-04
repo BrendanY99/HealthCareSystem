@@ -15,7 +15,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private AppointmentRepository appointmentRepository;
 	
 	@Override
-	public Appointment saveOrUpdate(Appointment appointment) {
+	public Appointment save(Appointment appointment) {
+
+			return appointmentRepository.save(appointment);
+
+	}
+	
+	@Override
+	public Appointment update(Appointment appointment) {
 		try {
 			if(appointment.getId()!=null && appointmentRepository.existsById(appointment.getId()))
 			{
@@ -34,6 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 			throw new AppointmentIDException("Appointment Id "+appointment.getId()+" already exists");
 		}
 	}
+	
 	
 	@Override
 	public Appointment viewAppointmentById(long id) {
@@ -55,5 +63,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointmentRepository.delete(appointment);
 		
 	}
+
+
 
 }

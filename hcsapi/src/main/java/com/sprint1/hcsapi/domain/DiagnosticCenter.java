@@ -1,10 +1,14 @@
 package com.sprint1.hcsapi.domain;
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -22,7 +26,9 @@ public class DiagnosticCenter {
 	private String dcEmail;
 	
 	/*@NotBlank(message="test/s is/are required")
-	private List<Test> test;*/
+	 */
+//	@OneToMany(cascade=CascadeType.ALL,mappedBy="diagnosticCenter")
+//	private List<Test> tests;
 
 	//@NotBlank(message="dcAddress is required")
 	private String dcAddress;

@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sprint1.hcsapi.configuration.JwtTokenProvider;
+import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.domain.Role;
 import com.sprint1.hcsapi.domain.Users;
 import com.sprint1.hcsapi.exception.EmailException;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService{
 	private JwtTokenProvider jwtTokenProvider;
 
 	@Override
-	public Users saveOrUpdate(Users users) {
+	public Users update(Users users) {
 		try {
 			users.getRoles().add(Role.ROLE_USER);
 			if(users.getId()!=null && userRepository.existsById(users.getId()) ) 
@@ -42,27 +43,20 @@ public class UserServiceImpl implements UserService{
 				if(users.getName()!=null) {
 					oldUser.setName(users.getName());
 				}
-				
 				if(users.getAge()!=null) {
 					oldUser.setAge(users.getAge());
 				}
-				
 	            if(users.getPhoneNo()!=null) {
 	            	oldUser.setPhoneNo(users.getPhoneNo());
 	            }
-	            
 	            if(users.getPassword()!=null) {
 	            	oldUser.setPassword(passwordEncoder.encode(users.getPassword()));
 	            }
 				return userRepository.save(oldUser);
 			}
-			users.setEmail(users.getEmail().toUpperCase());
-			users.setPassword(passwordEncoder.encode(users.getPassword()));
-			return userRepository.save(users);
-			
-//			Users user = userRepository.save(users);
-//			String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-//			return token
+			else {
+				throw new Exception();
+			}
 		
 		}catch(Exception e) {
 			System.out.println(e);
@@ -71,7 +65,20 @@ public class UserServiceImpl implements UserService{
 		}	
 		
 	}
+	
+	public String registerUser(Users users) {
+		users.getRoles().add(Role.ROLE_USER);
+		users.setEmail(users.getEmail().toUpperCase());
+		users.setPassword(passwordEncoder.encode(users.getPassword()));
+		Users user = userRepository.save(users);
+		String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+		return token;
+	}
 
+	
+	
+	
+	
 	@Override
 	public Users findUserByEmail(String email) {
 		Users users =userRepository.findByEmail(email.toUpperCase());
@@ -105,10 +112,20 @@ public class UserServiceImpl implements UserService{
 			throw new EmailException("validation failed");
 		}
 		
-	}	
-	
-	
-	
-	
+	}
+
+//	@Override
+//	public Appointment addAppointment(String token , Appointment appointment) {
+//		try {
+//			Users user=userRepository.findByUsername(jwtTokenProvider.getUsername(token));
+//			user.getAppointments().add(appointment);
+//			userRepository.save(user);
+//			
+//		}
+//		catch(Exception e) {
+//			System.out.println(e); 
+//		}
+//		return appointment;
+//	}
 
 }

@@ -1,5 +1,6 @@
 package com.sprint1.hcsapi.service;
 
+import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.domain.Users;
 
 /**This UserService interface have the functionality for Project Related Business logic
@@ -13,7 +14,9 @@ public interface UserService {
 	 * @param user to be saved or updated.
 	 * @return the Saved or updated user.
 	 */
-	public Users saveOrUpdate(Users users);
+	public Users update(Users users);
+	
+	public String registerUser(Users user);
 	
 	
 	/**This method will find the user according to their email
@@ -40,6 +43,7 @@ public interface UserService {
 	 */
 	public String validateUser(String username,String password);
 	
-	
+//
+//	public Appointment addAppointment(String token, Appointment appointment);
 
 }

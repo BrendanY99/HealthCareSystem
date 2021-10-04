@@ -4,7 +4,9 @@ import com.sprint1.hcsapi.domain.Appointment;
 
 public interface AppointmentService {
 
-	public Appointment saveOrUpdate(Appointment appointment);
+	public Appointment save(Appointment appointment);
+	
+	public Appointment update(Appointment appointment);
 	
 	public Appointment viewAppointmentById(long id);
 	
