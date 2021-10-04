@@ -12,4 +12,3 @@ public interface MapValidationErrorService {
 	 */
 	public ResponseEntity<?> mapValidationError(BindingResult result);
 }
-
