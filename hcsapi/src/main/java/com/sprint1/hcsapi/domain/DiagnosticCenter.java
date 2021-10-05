@@ -1,6 +1,5 @@
 package com.sprint1.hcsapi.domain;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+
+/**
+ * This DiagnosticCenter class is a domain which comprises of all the details in 
+ *
+ */
+
 @Entity
 public class DiagnosticCenter {
 
@@ -21,25 +26,30 @@ public class DiagnosticCenter {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long dcID;
+	private long id;
 	
 	/*
 	 * This is Diagnostic center name
 	 */
-	//@NotBlank(message="dcName is required")
-	private String dcName;
+	private String name;
+
 	
 	/*
 	 * This is Diagnostic center contact details
 	 */
-	private Long dcContactNo;
+	private Long contactNo;
+
 
 	/*
 	 * This is another email, another thing for contact Diagnostic center
 	 */
-	private String dcEmail;
+	private String email;
 	
-
+	/*
+	 * Address of Diagnostic center
+	 */
+	private String address;
+	
 	/*
 	 * Each Appoinment is connected to Diagnostic center via one to many relations
 	 * means 1 Diagnostic center can have any number of appoinments
@@ -48,81 +58,97 @@ public class DiagnosticCenter {
 	private List<Appointment> appointments=new ArrayList<>();
 	
 
-	/*
-	 * Address of Diagnostic center
+	/**
+	 * OneToMany mapping with Appointment
 	 */
-	//@NotBlank(message="dcAddress is required")
-	private String dcAddress;
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="diagnosticCenter")
+	private List<DiagnosticTest> diagnosticTest=new ArrayList<>();
+
+
 	
 	
 	/*
-	 * Constructor - default and parameterised
+	 * Constructor - default
 	 */
 	public DiagnosticCenter() {
 		
 	}
 
-	public DiagnosticCenter(long dcID, @NotBlank(message = "dcName is required") String dcName,
-			@NotBlank(message = "dcContactNo is required") Long dcContactNo, String dcEmail,
-			@NotBlank(message = "dcAddress is required") String dcAddress) {
+	/*
+	 * Constructor - parameterized
+	 */
+	public DiagnosticCenter(long id, @NotBlank(message = "Diagnostic Center name is required") String dcName,
+			@NotBlank(message = "diagnostic Center contactNo is required") Long dcContactNo, String dcEmail,
+			@NotBlank(message = "diagnostic Center Address is required") String dcAddress) {
 		super();
-		this.dcID = dcID;
-		this.dcName = dcName;
-		this.dcContactNo = dcContactNo;
-		this.dcEmail = dcEmail;
-		this.dcAddress = dcAddress;
+		this.id = id;
+		this.name = name;
+		this.contactNo = contactNo;
+		this.email = email;
+		this.address = address;
 	}
 
 	/*
 	 * Getters And setters
 	 */
-	public long getDcID() {
-		return dcID;
+
+	public long getId() {
+		return id;
 	}
 
-	public void setDcID(long dcID) {
-		this.dcID = dcID;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getDcName() {
-		return dcName;
+	public String getName() {
+		return name;
 	}
 
-	public void setDcName(String dcName) {
-		this.dcName = dcName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Long getDcContactNo() {
-		return dcContactNo;
+	public Long getContactNo() {
+		return contactNo;
 	}
 
-	public void setDcContactNo(Long dcContactNo) {
-		this.dcContactNo = dcContactNo;
+	public void setContactNo(Long contactNo) {
+		this.contactNo = contactNo;
 	}
 
-	public String getDcEmail() {
-		return dcEmail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDcEmail(String dcEmail) {
-		this.dcEmail = dcEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	
 
 	public List<Appointment> getAppointments() {
 		return appointments;
 	}
 
+
 	public void setAppointments(List<Appointment> appointments) {
 		this.appointments = appointments;
 	}
 
-	public String getDcAddress() {
-		return dcAddress;
+	public List<DiagnosticTest> getDiagnosticTest() {
+		return diagnosticTest;
 	}
 
-	public void setDcAddress(String dcAddress) {
-		this.dcAddress = dcAddress;
+	public void setDiagnosticTest(List<DiagnosticTest> diagnosticTest) {
+		this.diagnosticTest = diagnosticTest;
 	}
+
+	
 }

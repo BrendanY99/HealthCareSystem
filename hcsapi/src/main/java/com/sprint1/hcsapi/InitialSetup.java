@@ -2,23 +2,27 @@
 package com.sprint1.hcsapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.domain.DiagnosticCenter;
 import com.sprint1.hcsapi.domain.DiagnosticTest;
 import com.sprint1.hcsapi.domain.Role;
 import com.sprint1.hcsapi.domain.Users;
-import com.sprint1.hcsapi.repository.AppointmentRepository;
 import com.sprint1.hcsapi.repository.DiagnosticCenterRepository;
 import com.sprint1.hcsapi.repository.DiagnosticTestRepository;
 import com.sprint1.hcsapi.repository.UserRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**This InitialSetup class will add admin automatically when application is being run for first time only.
+ * This class will initially set one Diagnostic center and  one Diagnostic Test when application is being run for first time.
+ *@author devendra
+ *
+ */
 @Component
-public class InitialAdminSetup implements CommandLineRunner{
+public class InitialSetup implements CommandLineRunner{
 
 	@Autowired
 	UserRepository userRepository;
@@ -31,7 +35,9 @@ public class InitialAdminSetup implements CommandLineRunner{
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+	/**
+	 * This method is overriding the run method of CommandLineRunner.
+	 */
 	@Override
 	public void run(String... args) throws Exception{
 		Users users = userRepository.findByUsername("admin");
@@ -41,10 +47,10 @@ public class InitialAdminSetup implements CommandLineRunner{
 			}
 			catch(Exception e) {
 				DiagnosticCenter diagnosticCenter = new DiagnosticCenter();
-				diagnosticCenter.setDcAddress("lane-3,rajgarh,pune");
-				diagnosticCenter.setDcContactNo(8912323234L);
-				diagnosticCenter.setDcEmail("Ut@gmail.com");
-				diagnosticCenter.setDcName("Uptown Diagnostic Center");
+				diagnosticCenter.setAddress("lane-3,rajgarh,pune");
+				diagnosticCenter.setContactNo(8912323234L);
+				diagnosticCenter.setEmail("Ut@gmail.com");
+				diagnosticCenter.setName("Uptown Diagnostic Center");
 				diagnosticCenterRepository.save(diagnosticCenter);
 				DiagnosticTest diagnosticTest = new DiagnosticTest();
 				diagnosticTest.setDiagnosticCenter(diagnosticCenter);

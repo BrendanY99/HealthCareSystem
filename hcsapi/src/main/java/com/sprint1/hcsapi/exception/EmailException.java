@@ -10,18 +10,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class EmailException extends RuntimeException {
 	
-	/**
-	 * 
-	 */
   private static final long serialVersionUID = 1L;
 
-	/*
+	/**
 	 * This will create EmailException object without error message
 	 */
   public EmailException() {
 	  
   }
-  /*
+  /**
    * This will create EmailException object with error message.
    */
   

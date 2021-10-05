@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.sprint1.hcsapi.domain.DiagnosticTest;
 
-
-
 @Repository
 public interface DiagnosticTestRepository extends CrudRepository<DiagnosticTest, Long> {
 	 

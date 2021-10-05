@@ -19,6 +19,10 @@ public class TestResultServiceImpl implements TestResultService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
+	/**
+	 * This method is overriding the saveorUpdate method of Test Result Service
+	 * This method is to create and update test result
+	 */
 	@Override
 	public TestResult saveorUpdate(TestResult result) {
 		try {
@@ -39,12 +43,14 @@ public class TestResultServiceImpl implements TestResultService {
 		catch(Exception e) {
 			throw new TestResultIdException("TestResultId is"+result.getId()+"already exists");
 		}
-		
-		
+			
 	}
 
 
-	
+	/**
+	 * This method is overriding the removeTestResultById method of Test Result Service
+	 * This method is used to remove the test result by test result id
+	 */
 	@Override
 	public void removeTestResultById(long id) {
 		TestResult result= resultRepository.findTestResultById(id);
@@ -52,8 +58,10 @@ public class TestResultServiceImpl implements TestResultService {
 		
 	}
 
-
-
+	/**
+	 * This method is overriding the viewTestResultById method of Test Result Service
+	 * This method is used to view the test result by test result id
+	 */
 	@Override
 	public TestResult viewTestResultById(long apId) {
 		TestResult result = appointmentRepository.findById(apId).get().getTestResult();
@@ -65,16 +73,14 @@ public class TestResultServiceImpl implements TestResultService {
 		return result;
 	}
 
-
+	/**
+	 * This method is overriding the viewAllTestResults method of Test Result Service
+	 * This method is used by the admin to view all test results
+	 */
 	@Override
 	public Iterable<TestResult> viewAllTestResults() {
 		
 		return resultRepository.findAll();
 	}
-
-
-
-
-
 
 }

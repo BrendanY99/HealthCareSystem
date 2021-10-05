@@ -15,22 +15,31 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * This SecurityConfig class is to override the configuration methods and to set how configuration will work. 
+ * @author devendra
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
-	/*@Autowired
-	UserDetailsService userDetailsService;
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
-		
-	}
-	*/
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
+	/**
+	 * This method is initializing the authenticationManagerBean.
+	 */
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	
+	/**
+	 *This method is used to configure api authorities,resister and validate api will be accessible by everyone. 
+	 *and all other api will require authorization.
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -43,14 +52,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 		
 	}
+	
+	/**This method is used for password encoding
+	 * @return the encoded password
+	 */
 	@Bean
 	public PasswordEncoder passEncoder(){
 		return new BCryptPasswordEncoder(12);
 	}
 	
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+	
 }

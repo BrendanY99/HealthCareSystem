@@ -24,48 +24,50 @@ import com.sprint1.hcsapi.service.MapValidationErrorService;
 public class DignosticCenterController {
 
 	@Autowired
-	DiagnosticCenterService  dcs;
+	DiagnosticCenterService  diagnosticCenterService;
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	/*
+	/**
 	 * Method to get all Diagnostic Centers
 	 */
 	@GetMapping("/all")
 	public Iterable<DiagnosticCenter> getAllDisgnosticCenters()
 	{
-		return dcs.findAll();
+		return diagnosticCenterService.findAll();
 	}
-	
-	/*
+
+	/**
 	 * Method to create or update Diagnostic Center 
 	 */
 	@PostMapping("")
-	public ResponseEntity<?> createNewDC(@Valid @RequestBody DiagnosticCenter dc, BindingResult result) throws DiagnosticCenterException{
+	public ResponseEntity<?> createNewDC(@Valid @RequestBody DiagnosticCenter diagnosticCenter, BindingResult result) throws DiagnosticCenterException{
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
-		DiagnosticCenter newdc = dcs.saveOrUpdate(dc);
+		DiagnosticCenter newdiagnosticCenter = diagnosticCenterService.saveOrUpdate(diagnosticCenter);
 		
-		return new ResponseEntity<DiagnosticCenter>(newdc, HttpStatus.CREATED);
+		return new ResponseEntity<DiagnosticCenter>(newdiagnosticCenter, HttpStatus.CREATED);
 	}
-	/*
+	
+	/**
 	 * Delete the Diagnostic Center by its dcID
 	 * Here dcID is a path variable
 	 */
 	@DeleteMapping("/{dcID}")
 	public ResponseEntity<?> deleteProject(@PathVariable Long dcID){
-		dcs.deleteDiagnosticCenterBydcId(dcID);
+		diagnosticCenterService.deleteDiagnosticCenterById(dcID);
 		return new ResponseEntity<String>("DC with id : '"+dcID+"' is deleted.",HttpStatus.OK);
 	}
-	/*
+	
+	/**
 	 * This method will give Diagnostic Center based on its dcID
 	 * Here dcID is a path variable
 	 */
 	@GetMapping("/{dcID}")
 	public ResponseEntity<?> findDC(@PathVariable Long dcID){
-		DiagnosticCenter dc = dcs.findDiagnosticCenter(dcID);
-		return new ResponseEntity<DiagnosticCenter>(dc, HttpStatus.OK);
+		DiagnosticCenter diagnosticCenter = diagnosticCenterService.findDiagnosticCenter(dcID);
+		return new ResponseEntity<DiagnosticCenter>(diagnosticCenter, HttpStatus.OK);
 	}
 	
 }

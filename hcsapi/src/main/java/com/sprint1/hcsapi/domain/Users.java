@@ -29,33 +29,33 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 public class Users {
 	
-	/*
+	/**
 	 * This is id of user, it is primary key and auto generated.
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	/*
+	/**
 	 * This is email of user.
 	 */
 	@NotBlank(message="Email is required")
 	@Column(unique=true,updatable=false)
 	private String email;
 	
-	/*
-	 * 
+	/**
+	 * This is username of user it should be unique and cannot be updated.
 	 */
 	@Column(unique=true ,updatable=false)
 	private String username;
 	
-	/*
+	/**
 	 * This is password of user
 	 */
 	@NotBlank(message="Password is required")
 	private String password;
 	
-	/*
-	 * 
+	/**
+	 * This creates and maintains separate table called user_roles.
 	 */
 	@ElementCollection(fetch=FetchType.EAGER)
 	@JoinColumn(name="id")
@@ -63,19 +63,19 @@ public class Users {
 	private List<Role> roles=new ArrayList<>();
    
 	
-	/*
+	/**
 	 * This is name of user
 	 */
 	@NotBlank(message="Name is required")
 	private String name;
 	
-	/*
+	/**
 	 * This is gender of user
 	 */
 	@NotBlank(message="Gender is required")
 	private String gender;
 	
-	/*
+	/**
 	 * This is phone number of user
 	 * it should have 10 digits
 	 */
@@ -84,15 +84,24 @@ public class Users {
 	@Column(unique=true)
 	private String phoneNo;
 	
-	/*
+	/**
 	 * This is age of user
 	 */
 	private Integer age;
 	
-	
+	/**
+	 * OneToMany mapping with Appointment
+	 */
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
 	private List<Appointment> appointments=new ArrayList<>();
 	
+	/**
+	 * default constructor
+	 */
+	public Users() {
+		super();
+		
+	}
 	
 	public List<Appointment> getAppointments() {
 		return appointments;
@@ -102,10 +111,7 @@ public class Users {
 		this.appointments = appointments;
 	}
 
-	public Users() {
-		super();
-		
-	}
+	
 
 	public Long getId() {
 		return id;

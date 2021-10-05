@@ -1,10 +1,12 @@
 package com.sprint1.hcsapi.domain;
 
 import javax.persistence.CascadeType;
+
+
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,8 +16,6 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * tests that are available in the diagnostic center
  *
  */
+
 @Entity
 public class DiagnosticTest {
 	
@@ -61,19 +62,22 @@ public class DiagnosticTest {
 	
 	private String testStatus;
 	
-
+	/**
+	 * many to one relationship with diagnostic center
+	 */
 	@ManyToOne(cascade=CascadeType.REFRESH)
 	@JoinColumn(name="dc_id",updatable=false,nullable=false)
 	@JsonIgnore
 	private DiagnosticCenter diagnosticCenter;
 	
-	
+	/**
+	 * one to one relationship with appointment
+	 */
 	@OneToOne(cascade=CascadeType.ALL,mappedBy="diagnosticTest")
 //	@JoinColumn(name="appointment_id",nullable=false)
 	@JsonIgnore
 	private Appointment appointment;
 	
-
 
 	/**
 	 * Constructor without arguments

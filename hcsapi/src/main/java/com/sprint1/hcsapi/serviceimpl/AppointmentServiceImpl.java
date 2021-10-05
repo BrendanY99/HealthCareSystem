@@ -13,6 +13,10 @@ import com.sprint1.hcsapi.repository.DiagnosticTestRepository;
 import com.sprint1.hcsapi.repository.UserRepository;
 import com.sprint1.hcsapi.service.AppointmentService;
 
+/**
+ * This class is to implement all methods from service layer related to Appointment
+ * All business Logic related to Appointment is written in methods of this class
+ */
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 	
@@ -31,6 +35,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
+	/**
+	 * This method is overriding the save method of Appointment Service
+	 * This method will be used to create a new appointment
+	 * Token is used to set the user for that appointment
+	 */
 	@Override
 	public Appointment save(String token,Appointment appointment,long dcId) {
 
@@ -41,44 +50,40 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	}
 	
+	/**
+	 * This method is overriding the validate method of Appointment Service
+	 * This method will also validate if the appointment can be accepted or not based on availability of specific test
+	 * If the test is available, then appointment is accepted and Status of test is set to not available
+	 */
 	@Override
-	public Appointment update(Appointment appointment,long testId) {
+	public Appointment validate(Appointment appointment) {
 		try {
-			
-			System.out.println(appointment.getDiagnosticTest());
 			
 			Appointment oldAppointment=appointmentRepository.findById(appointment.getId()).get();
 			
-			
-			if(appointment.getDate()!=null) {
-				oldAppointment.setDate(appointment.getDate());
-			}
-			
-			if(appointment.getTestName()!=null) {
-				oldAppointment.setTestName(appointment.getTestName());
-			}
-			
-			String testStatus=diagnosticTestRepository.findById(testId).get().getTestStatus();
+			String testStatus=diagnosticTestRepository.findByTestName(oldAppointment.getTestName()).getTestStatus();
 			
 			if(testStatus.equals("Available")) {
 				oldAppointment.setApprovalStatus("Accepted");
-				DiagnosticTest diagnosticTest=diagnosticTestRepository.findById(testId).get();
+				DiagnosticTest diagnosticTest=diagnosticTestRepository.findByTestName(oldAppointment.getTestName());
 				diagnosticTest.setTestStatus("Not Available");
 				diagnosticTestRepository.save(diagnosticTest);
 			}
 			else {
 				oldAppointment.setApprovalStatus("Rejected");
 			}
-			return appointmentRepository.save(oldAppointment);
-			
+			return appointmentRepository.save(oldAppointment);		
 
 		}
 		catch(Exception e) {
-			throw new AppointmentIDException("Appointment Id "+appointment.getId()+" already exists");
+			throw new AppointmentIDException("Appointment Id "+appointment.getId()+" does not exists");
 		}
 	}
 	
-	
+	/**
+	 * This method is overriding the viewAppointmentById method of Appointment Service
+	 * This method allows the user and admin to check appointment details by providing the appointment id
+	 */
 	@Override
 	public Appointment viewAppointmentById(long id) {
 		Appointment appointment=appointmentRepository.findById(id).get();
@@ -88,18 +93,29 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return appointment;
 	}
 
+	/**
+	 * This method is overriding the viewAllAppointments method of Appointment Service
+	 * This method is used by Admin to view all appointments
+	 */
 	@Override
 	public Iterable<Appointment> viewAllAppointments() {
 		return appointmentRepository.findAll();
 	}
 
+	/**
+	 * This method is overriding the removeAppointmentById method of Appointment Service
+	 * This method is used to remove the appointment by appointment id
+	 */
 	@Override
 	public void removeAppointmentById(long id) {
-		Appointment appointment=appointmentRepository.findById(id).get();
-		appointmentRepository.delete(appointment);
+		try {
+			Appointment appointment=appointmentRepository.findById(id).get();
+			appointmentRepository.delete(appointment);
+		}
+		catch(Exception e) {
+			throw new AppointmentIDException("Appointment_Id "+id+" does not exists");
+		}
 		
 	}
-
-
 
 }

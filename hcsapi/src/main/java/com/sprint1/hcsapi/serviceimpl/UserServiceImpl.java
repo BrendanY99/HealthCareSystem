@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sprint1.hcsapi.configuration.JwtTokenProvider;
-import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.domain.Role;
 import com.sprint1.hcsapi.domain.Users;
 import com.sprint1.hcsapi.exception.EmailException;
@@ -32,7 +31,12 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-
+/**
+ * This method is overriding the update method of userService.
+ * This method will check if user id is not null and user exists then only update will get executed. 
+ * If any unique constraint violation take place then exception will be thrown.
+ * User cannot update his username and email.
+ */
 	@Override
 	public Users update(Users users) {
 		try {
@@ -58,27 +62,38 @@ public class UserServiceImpl implements UserService{
 				throw new Exception();
 			}
 		
-		}catch(Exception e) {
+	  }catch(Exception e) {
+			throw new EmailException("Cannot update this information.");
+
+		}		
+	}
+	/**
+	 *This method is overriding the registerUser method of userService.
+	 *This method will be used by user to register himself when user is new.
+	 *This method will check if this user exists already or not then only user gets register.
+	 */
+	@Override
+	public String registerUser(Users users) {
+		try {
+
+			users.getRoles().add(Role.ROLE_USER);
+			users.setEmail(users.getEmail().toUpperCase());
+			users.setPassword(passwordEncoder.encode(users.getPassword()));
+			Users user = userRepository.save(users);
+			String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+			return token;
+		}
+		catch(Exception e) {
 			System.out.println(e);
 			throw new EmailException("Email "+users.getEmail().toUpperCase()+" already exists");
 			
 		}	
-		
 	}
 	
-	public String registerUser(Users users) {
-		users.getRoles().add(Role.ROLE_USER);
-		users.setEmail(users.getEmail().toUpperCase());
-		users.setPassword(passwordEncoder.encode(users.getPassword()));
-		Users user = userRepository.save(users);
-		String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-		return token;
-	}
-
-	
-	
-	
-	
+	/**
+	 * This method is overriding the findUserByEmail method of userService.
+	 * 
+	 */
 	@Override
 	public Users findUserByEmail(String email) {
 		Users users =userRepository.findByEmail(email.toUpperCase());
@@ -87,20 +102,30 @@ public class UserServiceImpl implements UserService{
 		}
 		return users;
 	}
-
+	
+    /**
+     * This method is overriding the findAll method of userService.
+     */
 	@Override
 	public Iterable<Users> findAll() {
 		
 		return userRepository.findAll();
 	}
-
+    /**
+     * This method is overriding the deleteUserByEmail method of userService.
+     */
 	@Override
 	public void deleteUserByEmail(String email) {
 		Users users=findUserByEmail(email.toUpperCase());
 		userRepository.delete(users);	
 		
 	}
-
+    
+	/**
+	 * This method is overriding the validateUser method of userService.
+	 * It will return token is given username and password is correct.
+	 * It is used for login purpose.
+	 */
 	@Override
 	public String validateUser(String username, String password) {
 		try {
