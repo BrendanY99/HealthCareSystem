@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.sprint1.hcsapi.domain.TestResult;
 import com.sprint1.hcsapi.exception.TestResultIdException;
+import com.sprint1.hcsapi.repository.AppointmentRepository;
 import com.sprint1.hcsapi.repository.TestResultRepository;
 import com.sprint1.hcsapi.service.TestResultService;
 
@@ -15,6 +16,8 @@ public class TestResultServiceImpl implements TestResultService {
 	@Autowired
 	private TestResultRepository resultRepository;
 	
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 	
 	@Override
 	public TestResult saveorUpdate(TestResult result) {
@@ -42,7 +45,6 @@ public class TestResultServiceImpl implements TestResultService {
 
 
 	
-	
 	@Override
 	public void removeTestResultById(long id) {
 		TestResult result= resultRepository.findTestResultById(id);
@@ -50,12 +52,11 @@ public class TestResultServiceImpl implements TestResultService {
 		
 	}
 
-	
-	
+
 
 	@Override
-	public TestResult viewTestResultById(long id) {
-		TestResult result=resultRepository.findTestResultById(id);
+	public TestResult viewTestResultById(long apId) {
+		TestResult result = appointmentRepository.findById(apId).get().getTestResult();
 		if(result==null)
 		{
 			throw new TestResultIdException("TestResultId is"+result.getId()+"does not exists");
@@ -64,9 +65,6 @@ public class TestResultServiceImpl implements TestResultService {
 		return result;
 	}
 
-	
-	
-	
 
 	@Override
 	public Iterable<TestResult> viewAllTestResults() {

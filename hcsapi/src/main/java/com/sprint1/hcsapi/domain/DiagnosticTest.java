@@ -4,14 +4,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
-
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,7 +40,7 @@ public class DiagnosticTest {
 	@NotBlank(message="Test name is required")
 	@Column(unique = true,updatable = false)
 	private String testName;
-	
+
 	/**
 	 *  price value of the test
 	 */
@@ -56,23 +59,36 @@ public class DiagnosticTest {
 	@NotBlank(message="units is required")
 	private String units;
 	
-//	
-//	@ManyToOne(cascade=CascadeType.REFRESH)
-//	@JoinColumn(name="dc_id",updatable=false,nullable=false)
-//	@JsonIgnore
-//	private DiagnosticCenter diagnosticCenter;
+	private String testStatus;
+	
+
+	@ManyToOne(cascade=CascadeType.REFRESH)
+	@JoinColumn(name="dc_id",updatable=false,nullable=false)
+	@JsonIgnore
+	private DiagnosticCenter diagnosticCenter;
 	
 	
+	@OneToOne(cascade=CascadeType.ALL,mappedBy="diagnosticTest")
+//	@JoinColumn(name="appointment_id",nullable=false)
+	@JsonIgnore
+	private Appointment appointment;
+	
+
+
 	/**
 	 * Constructor without arguments
 	 */
 	public DiagnosticTest() {
 		super();
+		this.testStatus="Available";
 	}
 	
 	/**
 	 * Getters and Setters
 	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -103,6 +119,27 @@ public class DiagnosticTest {
 	public void setUnits(String units) {
 		this.units = units;
 	}
-	
+	public DiagnosticCenter getDiagnosticCenter() {
+		return diagnosticCenter;
+	}
 
+	public void setDiagnosticCenter(DiagnosticCenter diagnosticCenter) {
+		this.diagnosticCenter = diagnosticCenter;
+	}
+
+	public String getTestStatus() {
+		return testStatus;
+	}
+
+	public void setTestStatus(String testStatus) {
+		this.testStatus = testStatus;
+	}
+	
+	public Appointment getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
 }

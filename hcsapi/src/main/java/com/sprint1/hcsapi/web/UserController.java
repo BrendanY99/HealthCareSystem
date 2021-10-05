@@ -81,15 +81,7 @@ public class UserController {
 	public ResponseEntity<?> validateUser(@RequestBody Users users){
 		return new ResponseEntity<String>(userService.validateUser(users.getUsername(), users.getPassword()),HttpStatus.OK);
 	}
-	
-//	@PostMapping("/createAppointment")
-//	@PreAuthorize("hasRole('ROLE_USER')")
-//	public ResponseEntity<?> addAppointment(@RequestHeader Map<String,String> header,@RequestBody Appointment appointment){
-//		String token = header.get("authorization");
-//		token=token.substring(7);
-//		
-//		return new ResponseEntity<Appointment>(userService.addAppointment(token,appointment),HttpStatus.OK);
-//	}
+
 	
 
 }

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,32 +36,28 @@ public class TestResultController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("")
-	public ResponseEntity<?> createNewResult(@Valid @RequestBody TestResult tResult,BindingResult result){
-		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
-		if(errorMap!=null) return errorMap;
-		TestResult savedResult = resultservice.saveorUpdate(tResult);
-		
-		return new ResponseEntity<TestResult>(savedResult,HttpStatus.CREATED);
-		
-	}
+//	@PostMapping("")
+//	public ResponseEntity<?> createNewResult(@Valid @RequestBody TestResult tResult,BindingResult result){
+//		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
+//		if(errorMap!=null) return errorMap;
+//		TestResult savedResult = resultservice.saveorUpdate(tResult);
+//		
+//		return new ResponseEntity<TestResult>(savedResult,HttpStatus.CREATED);
+//		
+//	}
 	
 	
+//	@DeleteMapping("/{id}")
+//	public ResponseEntity<?> deleteTestResult(@PathVariable long id){
+//		resultservice.removeTestResultById(id);
+//		return new ResponseEntity<String>("Test Result with id: " +id + "is deleted",HttpStatus.OK);
+//	}
 	
 	
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteTestResult(@PathVariable long id){
-		resultservice.removeTestResultById(id);
-		return new ResponseEntity<String>("Test Result with id: " +id + "is deleted",HttpStatus.OK);
-	}
-	
-	
-	
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getTestResultById(@PathVariable long id){
-		TestResult result = resultservice.viewTestResultById(id);
+	@GetMapping("/{apId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+	public ResponseEntity<?> getTestResultById(@PathVariable long apId){
+		TestResult result = resultservice.viewTestResultById(apId);
 		return new ResponseEntity<TestResult>(result,HttpStatus.OK);
 	}
 	
@@ -68,6 +65,7 @@ public class TestResultController {
 	
 	
 	@GetMapping("/AllTestResults")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Iterable<TestResult> getAllTestResults(){
 		return resultservice.viewAllTestResults();
 	}

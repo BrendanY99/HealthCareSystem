@@ -1,5 +1,7 @@
 package com.sprint1.hcsapi.web;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,23 +32,34 @@ public class AppointmentController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/create")
+	
+	
+	@PostMapping("/create/{dcId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<?> createAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
+	public ResponseEntity<?> createAppointment(
+			@RequestHeader Map<String,String> header,
+			@Valid @RequestBody Appointment appointment,BindingResult result,
+			@PathVariable long dcId
+	){
 		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
-		Appointment savedAppointment= appointmentService.save(appointment);
+		String token = header.get("authorization").substring(7);
+		Appointment savedAppointment= appointmentService.save(token,appointment,dcId);
 		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/update")
+	
+	
+	@PostMapping("/update/{testId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> updateAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
+	public ResponseEntity<?> updateAppointment(@Valid @RequestBody Appointment appointment,BindingResult result,@PathVariable long testId){
 		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
-		Appointment savedAppointment= appointmentService.update(appointment);
+		Appointment savedAppointment= appointmentService.update(appointment,testId);
 		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.OK);
 	}
+	
+	
 	
 	@GetMapping("/{appointmentId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")

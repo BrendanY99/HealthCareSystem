@@ -1,6 +1,7 @@
 package com.sprint1.hcsapi.service;
 
 import com.sprint1.hcsapi.domain.DiagnosticTest;
+import com.sprint1.hcsapi.domain.TestResult;
 
 /**
  * This interface will hold the functionality for
@@ -13,7 +14,7 @@ public interface DiagnosticTestService {
 	 * @param diagnosticTest to be added or updated
 	 * @return the added or updated diagnostic test
 	 */
-	public DiagnosticTest addOrUpdateDiagnosticTest(DiagnosticTest diagnosticTest);
+	public DiagnosticTest addOrUpdateDiagnosticTest(DiagnosticTest diagnosticTest,long dcId);
 	
 	/**
 	 * This get method will return all the available diagnostic tests
@@ -27,5 +28,7 @@ public interface DiagnosticTestService {
 	 * @param testName
 	 */
 	public void deleteTestByTestName(String testName);
+	
+	public void getResult(TestResult testResult,long apId,long testId);
 	
 }

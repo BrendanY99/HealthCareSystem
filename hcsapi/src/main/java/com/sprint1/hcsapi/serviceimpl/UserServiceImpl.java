@@ -114,18 +114,4 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
-//	@Override
-//	public Appointment addAppointment(String token , Appointment appointment) {
-//		try {
-//			Users user=userRepository.findByUsername(jwtTokenProvider.getUsername(token));
-//			user.getAppointments().add(appointment);
-//			userRepository.save(user);
-//			
-//		}
-//		catch(Exception e) {
-//			System.out.println(e); 
-//		}
-//		return appointment;
-//	}
-
 }

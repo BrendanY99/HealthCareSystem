@@ -1,6 +1,7 @@
 package com.sprint1.hcsapi.domain;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -25,14 +26,20 @@ public class DiagnosticCenter {
 
 	private String dcEmail;
 	
+
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="diagnosticCenter")
+	private List<Appointment> appointments=new ArrayList<>();
+	
 	/*@NotBlank(message="test/s is/are required")
 	 */
-//	@OneToMany(cascade=CascadeType.ALL,mappedBy="diagnosticCenter")
-//	private List<Test> tests;
 
 	//@NotBlank(message="dcAddress is required")
 	private String dcAddress;
-	public DiagnosticCenter() {}
+	
+	
+	public DiagnosticCenter() {
+		
+	}
 
 	public DiagnosticCenter(long dcID, @NotBlank(message = "dcName is required") String dcName,
 			@NotBlank(message = "dcContactNo is required") Long dcContactNo, String dcEmail,
@@ -78,6 +85,14 @@ public class DiagnosticCenter {
 	}
 
 	
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 
 	public String getDcAddress() {
 		return dcAddress;
