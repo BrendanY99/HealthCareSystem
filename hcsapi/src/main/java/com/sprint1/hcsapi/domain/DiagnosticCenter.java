@@ -15,28 +15,49 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class DiagnosticCenter {
 
+	/*
+	 * This is Id of Diagnostic center
+	 * This is primary key, it is auto generated and unique one also
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long dcID;
 	
+	/*
+	 * This is Diagnostic center name
+	 */
 	//@NotBlank(message="dcName is required")
 	private String dcName;
 	
+	/*
+	 * This is Diagnostic center contact details
+	 */
 	private Long dcContactNo;
 
+	/*
+	 * This is another email, another thing for contact Diagnostic center
+	 */
 	private String dcEmail;
 	
 
+	/*
+	 * Each Appoinment is connected to Diagnostic center via one to many relations
+	 * means 1 Diagnostic center can have any number of appoinments
+	 */
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="diagnosticCenter")
 	private List<Appointment> appointments=new ArrayList<>();
 	
-	/*@NotBlank(message="test/s is/are required")
-	 */
 
+	/*
+	 * Address of Diagnostic center
+	 */
 	//@NotBlank(message="dcAddress is required")
 	private String dcAddress;
 	
 	
+	/*
+	 * Constructor - default and parameterised
+	 */
 	public DiagnosticCenter() {
 		
 	}
@@ -52,6 +73,9 @@ public class DiagnosticCenter {
 		this.dcAddress = dcAddress;
 	}
 
+	/*
+	 * Getters And setters
+	 */
 	public long getDcID() {
 		return dcID;
 	}

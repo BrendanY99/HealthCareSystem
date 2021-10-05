@@ -29,13 +29,18 @@ public class DignosticCenterController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
+	/*
+	 * Method to get all Diagnostic Centers
+	 */
 	@GetMapping("/all")
 	public Iterable<DiagnosticCenter> getAllDisgnosticCenters()
 	{
 		return dcs.findAll();
 	}
 	
-	
+	/*
+	 * Method to create or update Diagnostic Center 
+	 */
 	@PostMapping("")
 	public ResponseEntity<?> createNewDC(@Valid @RequestBody DiagnosticCenter dc, BindingResult result) throws DiagnosticCenterException{
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
@@ -44,11 +49,19 @@ public class DignosticCenterController {
 		
 		return new ResponseEntity<DiagnosticCenter>(newdc, HttpStatus.CREATED);
 	}
+	/*
+	 * Delete the Diagnostic Center by its dcID
+	 * Here dcID is a path variable
+	 */
 	@DeleteMapping("/{dcID}")
 	public ResponseEntity<?> deleteProject(@PathVariable Long dcID){
 		dcs.deleteDiagnosticCenterBydcId(dcID);
 		return new ResponseEntity<String>("DC with id : '"+dcID+"' is deleted.",HttpStatus.OK);
 	}
+	/*
+	 * This method will give Diagnostic Center based on its dcID
+	 * Here dcID is a path variable
+	 */
 	@GetMapping("/{dcID}")
 	public ResponseEntity<?> findDC(@PathVariable Long dcID){
 		DiagnosticCenter dc = dcs.findDiagnosticCenter(dcID);
