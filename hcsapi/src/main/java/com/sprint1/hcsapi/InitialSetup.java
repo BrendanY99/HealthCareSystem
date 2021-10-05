@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.domain.DiagnosticCenter;
 import com.sprint1.hcsapi.domain.DiagnosticTest;
 import com.sprint1.hcsapi.domain.Role;
@@ -18,7 +17,7 @@ import com.sprint1.hcsapi.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Component
-public class InitialAdminSetup implements CommandLineRunner{
+public class InitialSetup implements CommandLineRunner{
 
 	@Autowired
 	UserRepository userRepository;

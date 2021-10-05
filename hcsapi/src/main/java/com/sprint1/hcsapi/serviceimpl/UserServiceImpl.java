@@ -60,19 +60,26 @@ public class UserServiceImpl implements UserService{
 		
 		}catch(Exception e) {
 			System.out.println(e);
-			throw new EmailException("Email "+users.getEmail().toUpperCase()+" already exists");
+			throw new EmailException("Email "+users.getEmail().toUpperCase()+" does not exists");
 			
 		}	
 		
 	}
 	
 	public String registerUser(Users users) {
-		users.getRoles().add(Role.ROLE_USER);
-		users.setEmail(users.getEmail().toUpperCase());
-		users.setPassword(passwordEncoder.encode(users.getPassword()));
-		Users user = userRepository.save(users);
-		String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-		return token;
+		try {
+			users.getRoles().add(Role.ROLE_USER);
+			users.setEmail(users.getEmail().toUpperCase());
+			users.setPassword(passwordEncoder.encode(users.getPassword()));
+			Users user = userRepository.save(users);
+			String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+			return token;
+		}
+		catch(Exception e) {
+			System.out.println(e);
+			throw new EmailException("Email "+users.getEmail().toUpperCase()+" already exists");
+			
+		}	
 	}
 
 	
