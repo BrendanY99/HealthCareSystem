@@ -1,7 +1,5 @@
 package com.sprint1.hcsapi.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,18 +15,17 @@ public interface UserRepository extends CrudRepository<Users, Long> {
   
 	
 	
-	/**This method find the user by email.
+	/**This method is used to find the user by email.
 	 * @param email
 	 * @return User object if user available otherwise exception is thrown.
 	 */
 	Users findByEmail(String email);
 	
-	/**
+	/**This method is used to find user by username. 
 	 * @param username
-	 * @return
+	 * @return the user
 	 */
 	Users findByUsername(String username);
 	
-   
-	
+  
 }

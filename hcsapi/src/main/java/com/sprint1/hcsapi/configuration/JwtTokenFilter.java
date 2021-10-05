@@ -12,7 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sprint1.hcsapi.exception.CustomException;
-
+/**
+ * This class JwtTokenFilter is used to create the token filter.
+ * 
+ */
 public class JwtTokenFilter extends OncePerRequestFilter {
 
 	private JwtTokenProvider jwtTokenProvider;
@@ -20,7 +23,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
-
+    /**
+     * This method is used to verify the request sent, by validating token.
+     */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {

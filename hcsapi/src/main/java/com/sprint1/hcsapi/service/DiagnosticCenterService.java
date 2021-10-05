@@ -1,10 +1,7 @@
 package com.sprint1.hcsapi.service;
 
 
-import java.util.Optional;
-
 import com.sprint1.hcsapi.domain.DiagnosticCenter;
-import com.sprint1.hcsapi.exception.DiagnosticCenterException;
 
 public interface DiagnosticCenterService {
 
