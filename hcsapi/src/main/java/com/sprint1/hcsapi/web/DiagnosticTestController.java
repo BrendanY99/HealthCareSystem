@@ -30,7 +30,6 @@ import com.sprint1.hcsapi.service.DiagnosticTestService;
 import com.sprint1.hcsapi.service.MapValidationErrorService;
 
 
-
 @RestController
 @RequestMapping("/api/Tests")
 public class DiagnosticTestController {
@@ -43,6 +42,12 @@ public class DiagnosticTestController {
 	
 	
 	
+	/**
+	 * create a response entity for addDiagnosticTest method  with test details and http status created
+	 * @param diagnosticTest
+	 * @param result
+	 * @param dcId
+	 */
 	@PostMapping("/{dcId}/createTest")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> addDiagnosticTest(@Valid @RequestBody DiagnosticTest diagnosticTest,BindingResult result,@PathVariable long dcId){
@@ -54,6 +59,10 @@ public class DiagnosticTestController {
 		
 	}
 	
+	/**
+	 * create response entity for deleteTestByName method with a message  and http status ok
+	 * @param testName
+	 */
 	@DeleteMapping("/{testName}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> deleteTestByName(@PathVariable String testName){
@@ -61,6 +70,10 @@ public class DiagnosticTestController {
 		return new ResponseEntity<String>("Diagnostic Test "+testName.toUpperCase()+" is deleted successfully",HttpStatus.OK);
 	}
 	
+	/**
+	 * create response entity for getAllTests method with all the test details and http status ok
+	 * @return
+	 */
 	@GetMapping("/getAllTests")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Iterable<DiagnosticTest>> getAllTests(){
@@ -68,6 +81,13 @@ public class DiagnosticTestController {
 		return new ResponseEntity<Iterable<DiagnosticTest>>(testList,HttpStatus.OK);
 	}
     
+	/**
+	 *
+	 * @param testResult
+	 * @param apId
+	 * @param testId
+	 * @return http status code for doTest method 
+	 */
 	@PostMapping("{apId}/{testId}/makeResult")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public HttpStatus doTest(@Valid @RequestBody TestResult testResult,@PathVariable long apId,@PathVariable long testId){
