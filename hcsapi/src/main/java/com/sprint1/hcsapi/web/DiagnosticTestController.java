@@ -1,7 +1,5 @@
 package com.sprint1.hcsapi.web;
 
-
-
 import javax.validation.Valid;
 
 
@@ -29,7 +27,6 @@ import com.sprint1.hcsapi.domain.TestResult;
 import com.sprint1.hcsapi.service.DiagnosticTestService;
 import com.sprint1.hcsapi.service.MapValidationErrorService;
 
-
 @RestController
 @RequestMapping("/api/Tests")
 public class DiagnosticTestController {
@@ -39,8 +36,6 @@ public class DiagnosticTestController {
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
-	
-	
 	
 	/**
 	 * create a response entity for addDiagnosticTest method  with test details and http status created
@@ -82,17 +77,13 @@ public class DiagnosticTestController {
 	}
     
 	/**
-	 *
-	 * @param testResult
-	 * @param apId
-	 * @param testId
-	 * @return http status code for doTest method 
+	 * This method is used to create the test result and returns a string
 	 */
-	@PostMapping("{apId}/{testId}/makeResult")
+	@PostMapping("{apId}/makeResult")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public HttpStatus doTest(@Valid @RequestBody TestResult testResult,@PathVariable long apId,@PathVariable long testId){
-		diagnosticTestService.getResult(testResult,apId,testId);
-		return HttpStatus.OK;
+	public String makeResult(@Valid @RequestBody TestResult testResult,@PathVariable long apId){
+		diagnosticTestService.getResult(testResult,apId);
+		return "Test Result has been succesfully created";
 	}
 
 }

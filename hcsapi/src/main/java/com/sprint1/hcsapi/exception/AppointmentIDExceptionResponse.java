@@ -1,5 +1,8 @@
 package com.sprint1.hcsapi.exception;
 
+/**
+ * This class creates the responses for exceptions generated due to appointment ID
+ */
 public class AppointmentIDExceptionResponse {
 	private String id;
 

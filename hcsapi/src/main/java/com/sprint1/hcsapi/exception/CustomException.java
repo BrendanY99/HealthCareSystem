@@ -2,6 +2,9 @@ package com.sprint1.hcsapi.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * This class is used to handle any type of exception in the entire program
+ */
 public class CustomException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

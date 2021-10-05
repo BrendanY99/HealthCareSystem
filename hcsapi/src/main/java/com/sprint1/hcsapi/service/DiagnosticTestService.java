@@ -34,8 +34,7 @@ public interface DiagnosticTestService {
 	 * This getResult method will get the test Result of respective test id and appointment id 
 	 * @param testResult
 	 * @param apId
-	 * @param testId
 	 */
-	public void getResult(TestResult testResult,long apId,long testId);
+	public void getResult(TestResult testResult,long apId);
 	
 }

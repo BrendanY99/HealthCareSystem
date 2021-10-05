@@ -94,6 +94,7 @@ public class Users {
 	 */
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
 	private List<Appointment> appointments=new ArrayList<>();
+	
 	/**
 	 * default constructor
 	 */

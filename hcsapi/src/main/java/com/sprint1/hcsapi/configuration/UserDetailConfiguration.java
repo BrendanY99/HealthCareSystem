@@ -40,5 +40,4 @@ public class UserDetailConfiguration implements UserDetailsService{
 				.build();
 	}
 	   
-
 }

@@ -47,10 +47,10 @@ public class InitialSetup implements CommandLineRunner{
 			}
 			catch(Exception e) {
 				DiagnosticCenter diagnosticCenter = new DiagnosticCenter();
-				diagnosticCenter.setDcAddress("lane-3,rajgarh,pune");
-				diagnosticCenter.setDcContactNo(8912323234L);
-				diagnosticCenter.setDcEmail("Ut@gmail.com");
-				diagnosticCenter.setDcName("Uptown Diagnostic Center");
+				diagnosticCenter.setAddress("lane-3,rajgarh,pune");
+				diagnosticCenter.setContactNo(8912323234L);
+				diagnosticCenter.setEmail("Ut@gmail.com");
+				diagnosticCenter.setName("Uptown Diagnostic Center");
 				diagnosticCenterRepository.save(diagnosticCenter);
 				DiagnosticTest diagnosticTest = new DiagnosticTest();
 				diagnosticTest.setDiagnosticCenter(diagnosticCenter);

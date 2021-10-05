@@ -27,9 +27,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
+ * This class is used to create Jwt token and other methods related to token.
  * 
- * 
- *
  */
 @Component
 public class JwtTokenProvider {

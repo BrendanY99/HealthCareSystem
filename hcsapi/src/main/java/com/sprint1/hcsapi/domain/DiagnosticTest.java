@@ -79,7 +79,6 @@ public class DiagnosticTest {
 	private Appointment appointment;
 	
 
-
 	/**
 	 * Constructor without arguments
 	 */

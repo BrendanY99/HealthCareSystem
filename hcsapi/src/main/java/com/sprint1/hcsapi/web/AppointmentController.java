@@ -22,6 +22,9 @@ import com.sprint1.hcsapi.domain.Appointment;
 import com.sprint1.hcsapi.service.AppointmentService;
 import com.sprint1.hcsapi.service.MapValidationErrorService;
 
+/**
+ * This class is used for handling requests and generates json response
+ */
 @RestController
 @RequestMapping("/api/appointments")
 public class AppointmentController {
@@ -31,15 +34,16 @@ public class AppointmentController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	
-	
+	/**
+	 * create a response entity for createAppointment method  with appointment details and http status created
+	 */
 	@PostMapping("/create/{dcId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> createAppointment(
 			@RequestHeader Map<String,String> header,
 			@Valid @RequestBody Appointment appointment,BindingResult result,
-			@PathVariable long dcId
-	){
+			@PathVariable long dcId)
+	{
 		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
 		String token = header.get("authorization").substring(7);
@@ -47,19 +51,21 @@ public class AppointmentController {
 		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.CREATED);
 	}
 	
-	
-	
-	@PostMapping("/update/{testId}")
+	/**
+	 * create a response entity for updateAppointment method  with appointment details and http status created
+	 */
+	@PostMapping("/validate")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> updateAppointment(@Valid @RequestBody Appointment appointment,BindingResult result,@PathVariable long testId){
+	public ResponseEntity<?> validateAppointment(@Valid @RequestBody Appointment appointment,BindingResult result){
 		ResponseEntity<?> errorMap=mapValidationErrorService.mapValidationError(result);
 		if(errorMap!=null) return errorMap;
-		Appointment savedAppointment= appointmentService.update(appointment,testId);
-		return new ResponseEntity<Appointment>(savedAppointment, HttpStatus.OK);
+		Appointment validatedAppointment= appointmentService.validate(appointment);
+		return new ResponseEntity<Appointment>(validatedAppointment, HttpStatus.OK);
 	}
 	
-	
-	
+	/**
+	 * create a response entity for getAppointmentById method  with path variable appointment id and http status ok
+	 */
 	@GetMapping("/{appointmentId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public ResponseEntity<?> getAppointmentById(@PathVariable long appointmentId){
@@ -67,12 +73,18 @@ public class AppointmentController {
 		return new ResponseEntity<Appointment>(appointment, HttpStatus.OK);
 	}
 	
+	/**
+	 * this method is used to return the list of appointments to the admin
+	 */
 	@GetMapping("/allAppointments")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Iterable<Appointment> getAllAppointments(){
 		return appointmentService.viewAllAppointments();
 	}
 	
+	/**
+	 * create a response entity for deleteAppointment method  with appointment id and http status ok
+	 */
 	@DeleteMapping("/{appointmentId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> deleteAppointment(@PathVariable long appointmentId){

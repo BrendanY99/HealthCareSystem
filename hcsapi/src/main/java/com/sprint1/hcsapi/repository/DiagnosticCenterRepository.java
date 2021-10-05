@@ -8,9 +8,12 @@ import com.sprint1.hcsapi.domain.DiagnosticCenter;
 @Repository
 public interface DiagnosticCenterRepository extends  CrudRepository<DiagnosticCenter, Long> {
 	
-	//no need to implement methods as all are present in crud repository
-	
-	DiagnosticCenter findDiagnosticCenterBydcID(Long dcID);
+	//no need to implement methods as all are present in Crud repository
+	/*
+	 * This method will  return  Diagnostic Center by its id(primary key)
+	 * give id as parameter to method
+	 */
+	DiagnosticCenter findDiagnosticCenterById(Long id);
 	
 
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
  */
 public enum Role implements GrantedAuthority{
 	ROLE_ADMIN,ROLE_USER;
+	
     /**
      * This getAuthority will returns role name for token.
      */
