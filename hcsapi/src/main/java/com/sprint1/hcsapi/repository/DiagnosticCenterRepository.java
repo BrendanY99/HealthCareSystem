@@ -15,5 +15,4 @@ public interface DiagnosticCenterRepository extends  CrudRepository<DiagnosticCe
 	 */
 	DiagnosticCenter findDiagnosticCenterById(Long id);
 	
-
 }

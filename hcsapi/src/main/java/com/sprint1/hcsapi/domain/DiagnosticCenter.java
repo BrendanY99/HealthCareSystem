@@ -32,11 +32,13 @@ public class DiagnosticCenter {
 	 * This is Diagnostic center name
 	 */
 	private String name;
+
 	
 	/*
 	 * This is Diagnostic center contact details
 	 */
 	private Long contactNo;
+
 
 	/*
 	 * This is another email, another thing for contact Diagnostic center
@@ -47,7 +49,6 @@ public class DiagnosticCenter {
 	 * Address of Diagnostic center
 	 */
 	private String address;
-	
 	
 	/*
 	 * Each Appoinment is connected to Diagnostic center via one to many relations
@@ -62,9 +63,12 @@ public class DiagnosticCenter {
 	 */
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="diagnosticCenter")
 	private List<DiagnosticTest> diagnosticTest=new ArrayList<>();
+
+
+	
 	
 	/*
-	 * Constructor - default 
+	 * Constructor - default
 	 */
 	public DiagnosticCenter() {
 		

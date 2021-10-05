@@ -37,7 +37,7 @@ public class DignosticCenterController {
 	{
 		return diagnosticCenterService.findAll();
 	}
-	
+
 	/**
 	 * Method to create or update Diagnostic Center 
 	 */

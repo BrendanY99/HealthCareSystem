@@ -19,7 +19,7 @@ public class DiagnosticCenterServiceImpl implements DiagnosticCenterService {
 	
 	@Autowired
 	private DiagnosticCenterRepository diagnosticCenterRepository;
-	
+
 	/**
 	 * This method will create or update Diagnostic Center
 	 * we will get Diagnostic Center from controller via parameter
@@ -74,6 +74,7 @@ public class DiagnosticCenterServiceImpl implements DiagnosticCenterService {
 	public Iterable<DiagnosticCenter> findAll() {
 		return diagnosticCenterRepository.findAll();
 	}
+
 
 	/**
 	 * This method will delete the Diagnostic Center via its dcID
