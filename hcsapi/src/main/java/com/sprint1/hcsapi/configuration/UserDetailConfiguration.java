@@ -1,21 +1,27 @@
 package com.sprint1.hcsapi.configuration;
 
-import java.security.Security;
-import java.util.HashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.sprint1.hcsapi.domain.Users;
 import com.sprint1.hcsapi.repository.UserRepository;
 
+/**
+ * This UserDetailConfig class is used for accessing the username and password of users.
+ * @author devendra
+ *
+ */
 @Service
-public class UserDetailConfig implements UserDetailsService{
+public class UserDetailConfiguration implements UserDetailsService{
 	@Autowired
 	private UserRepository userRepository ;
+	/**
+	 * This method checks if user exists with provided username.
+	 * The token will be provided if provided  password and username are correct.
+	 * 
+	 */
 	@Override
 	public UserDetails  loadUserByUsername(String username) throws UsernameNotFoundException {
 		
